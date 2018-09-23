@@ -9,6 +9,7 @@ import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angula
 })
 export class AddUserComponent implements OnInit {
   userForm: FormGroup;
+  editMode: Boolean;
   users: User[] = [
     {
       FirstName: "Uthaya Kumar",
@@ -45,6 +46,7 @@ export class AddUserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.editMode = false;
     this.userForm = this.formBuilder.group({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)]
@@ -73,6 +75,7 @@ export class AddUserComponent implements OnInit {
 
   reset(form: NgForm): void {
     form.resetForm();
+    this.editMode = false;
   }
 
   editUser(user: User) {
@@ -81,5 +84,6 @@ export class AddUserComponent implements OnInit {
       lastName: user.LastName,
       employeeId: user.EmployeeId
     });
+    this.editMode = true;
   }
 }

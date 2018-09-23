@@ -36,7 +36,8 @@
     </div>
     <div class="col-md-3">
       <div class="button-row">
-        <button type="submit" class="btn btn-success margin-right-10">Update Task</button>
+        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10">Add Task</button>
+        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10">Update Task</button>
         <input type="button" class="btn btn-danger" (click)="reset(formDir)" value="Reset" />
       </div>
     </div>
