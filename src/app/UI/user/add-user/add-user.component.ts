@@ -75,6 +75,7 @@ export class AddUserComponent implements OnInit {
 
   reset(form: NgForm): void {
     form.resetForm();
+    this.userForm.controls['employeeId'].enable();
     this.editMode = false;
   }
 
@@ -84,6 +85,7 @@ export class AddUserComponent implements OnInit {
       lastName: user.LastName,
       employeeId: user.EmployeeId
     });
+    this.userForm.controls['employeeId'].disable();
     this.editMode = true;
   }
 }

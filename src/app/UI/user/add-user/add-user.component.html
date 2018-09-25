@@ -1,5 +1,5 @@
 <div class="page-header">Add User</div>
-<form class="form-horizontal" [formGroup]="userForm" (ngSubmit)="addUser()" #formDir="ngForm" novalidate>
+<form class="form-horizontal" [formGroup]="userForm" #formDir="ngForm" novalidate>
   <div class="row">
     <div class="col-md-3">
       <mat-form-field>
@@ -36,8 +36,8 @@
     </div>
     <div class="col-md-3">
       <div class="button-row">
-        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10">Add Task</button>
-        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10">Update Task</button>
+        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10" (click)="addUser()">Add Task</button>
+        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10" (click)="updateUser()">Update Task</button>
         <input type="button" class="btn btn-danger" (click)="reset(formDir)" value="Reset" />
       </div>
     </div>
@@ -45,7 +45,7 @@
 </form>
 <br/>
 <div class="page-header">
-  Users List
+  View User
 </div>
 <div class="row">
   <div class="col-md-4">

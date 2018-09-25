@@ -2,4 +2,14 @@
 
 
 .page-header { margin-top: 0; font-size: 16px; font-weight: bold; color: blueviolet; }
+.margin-right-10 { margin-right: 10px !important; }
+.margin-left-10 { margin-left: 10px !important; }
+.margin-right-neg-15 { margin-right: -15px; }
+.margin-bottom-0 { margin-bottom: 0; }
+.padding-top-10 { padding-top: 10px; }
+.width-100-percent { width: 100%; }
+.borderless td, .borderless th { border: none !important; }
+.horizontal-scroll { overflow: auto; }
+
 mat-form-field { width: 100%; }
+mat-slider { width: 100%; margin-left: -8px; }

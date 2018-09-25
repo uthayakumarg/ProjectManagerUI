@@ -3,35 +3,33 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule, MatFormFieldModule, MatSelectModule, MatButtonModule, 
+  MatSliderModule, MatDialogModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { AddUserComponent } from './UI/user/add-user/add-user.component';
-import { UserListComponent } from './UI/user/user-list/user-list.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AddProjectComponent } from './UI/project/add-project/add-project.component';
-import { ProjectsListComponent } from './UI/project/projects-list/projects-list.component';
 import { AddTaskComponent } from './UI/task/add-task/add-task.component';
 import { ViewTaskComponent } from './UI/task/view-task/view-task.component';
 import { TasksListComponent } from './UI/task/tasks-list/tasks-list.component';
 import { FilterPipe } from './Pipes/filter.pipe';
 import { OrderByPipe } from './Pipes/order-by.pipe';
+import { UserDialogComponent } from './UI/shared/user-dialog/user-dialog.component';
+import { MessageDialogComponent } from './UI/shared/message-dialog/message-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddUserComponent,
-    UserListComponent,
     AddProjectComponent,
-    ProjectsListComponent,
     AddTaskComponent,
     ViewTaskComponent,
     TasksListComponent,
     FilterPipe,
-    OrderByPipe
+    OrderByPipe,
+    UserDialogComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -42,9 +40,15 @@ import { OrderByPipe } from './Pipes/order-by.pipe';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSliderModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UserDialogComponent, MessageDialogComponent]
 })
 export class AppModule { }
