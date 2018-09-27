@@ -1,5 +1,5 @@
 <div class="page-header">Add Project</div>
-<form [formGroup]="projectForm" #formDir="ngForm" novalidate>
+<form [formGroup]="projectForm" #formDir="ngForm" novalidate autocomplete="off">
   <div class="row">
     <div class="col-md-6">
       <mat-form-field>
@@ -49,8 +49,8 @@
         </div>
       </div>
       <div class="button-row">
-        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10" (click)="addProject()">Add Project</button>
-        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10" (click)="updateProject()">Update Project</button>
+        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10" (click)="addProject(formDir)">Add Project</button>
+        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10" (click)="updateProject(formDir)">Update Project</button>
         <input type="button" class="btn btn-danger" (click)="reset(formDir)" value="Reset" />
       </div>
     </div>
@@ -62,7 +62,7 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    <input class="form-control" type="text" placeholder="Search" [(ngModel)]="srchTerm" />
+    <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="srchTerm" />
   </div>
   <div class="col-md-8">
     <label>Sort By:</label>
@@ -112,7 +112,7 @@
       </div>
       <div class="col-md-4">
         <button class="btn btn-primary margin-right-10" (click)="editProject(project)">Update</button>
-        <button class="btn btn-danger">Suspend</button>
+        <button class="btn btn-danger" (click)="suspendProject(project.ProjectId)">Suspend</button>
       </div>
     </div>
   </div>

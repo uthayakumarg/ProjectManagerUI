@@ -1,5 +1,5 @@
 <div class="page-header">Add User</div>
-<form class="form-horizontal" [formGroup]="userForm" #formDir="ngForm" novalidate>
+<form class="form-horizontal" [formGroup]="userForm" #formDir="ngForm" novalidate autocomplete="off">
   <div class="row">
     <div class="col-md-3">
       <mat-form-field>
@@ -36,8 +36,8 @@
     </div>
     <div class="col-md-3">
       <div class="button-row">
-        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10" (click)="addUser()">Add Task</button>
-        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10" (click)="updateUser()">Update Task</button>
+        <button type="submit" *ngIf="!editMode" class="btn btn-success margin-right-10" (click)="addUser(formDir)">Add User</button>
+        <button type="submit" *ngIf="editMode" class="btn btn-success margin-right-10" (click)="updateUser(formDir)">Update User</button>
         <input type="button" class="btn btn-danger" (click)="reset(formDir)" value="Reset" />
       </div>
     </div>
@@ -49,7 +49,7 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    <input class="form-control" type="text" placeholder="Search" [(ngModel)]="srchTerm" />
+    <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="srchTerm" />
   </div>
   <div class="col-md-8">
     <label>Sort By:</label>
@@ -72,7 +72,7 @@
       </div>
       <div class="col-md-6">
         <button class="btn btn-primary margin-right-10" (click)="editUser(user)">Edit</button>
-        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-danger" (click)="deleteUser(user.EmployeeId)">Delete</button>
       </div>
     </div>
   </div>

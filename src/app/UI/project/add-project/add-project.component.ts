@@ -6,6 +6,7 @@ import { MessageDialogComponent } from '../../shared/message-dialog/message-dial
 import { User } from 'src/app/Models/user';
 import { Project } from 'src/app/Models/project';
 import { UtilityService } from '../../../Services/utility.service'
+import { ProjectService } from 'src/app/Services/project.service';
 
 @Component({
   selector: 'app-add-project',
@@ -15,56 +16,28 @@ import { UtilityService } from '../../../Services/utility.service'
 export class AddProjectComponent implements OnInit {
   projectForm: FormGroup;
   editMode: Boolean;
+  selectedProjId: number;
   selectedMgrId: number;
   project: Project;
   searchProps: string[] = ['ProjectName', 'TasksCount', 'StartDate', 'Completed', 'EndDate', 'Priority'];
-  projects: Project[] = [
-    {
-      ProjectId: 1,
-      ProjectName: 'Development Project',
-      TasksCount: 5,
-      Completed: 2,
-      StartDate: '09/01/2018',
-      EndDate: '10/01/2018',
-      Priority: 1,
-      ProjectManagerId: 3049571,
-      ProjectManagerFullName: 'Uthaya Kumar Ganesan'
-    },
-    {
-      ProjectId: 2,
-      ProjectName: 'Testing Project',
-      TasksCount: 8,
-      Completed: 7,
-      StartDate: '09/05/2018',
-      EndDate: '10/10/2018',
-      Priority: 2,
-      ProjectManagerId: 1234567,
-      ProjectManagerFullName: 'Mani Krishna'
-    },
-    {
-      ProjectId: 3,
-      ProjectName: 'Enhancement Project',
-      TasksCount: 18,
-      Completed: 9,
-      StartDate: '09/01/2017',
-      EndDate: '10/01/2017',
-      Priority: 3,
-      ProjectManagerId: 9003483,
-      ProjectManagerFullName: 'Sunil Sinha Venkatesh'
-    }
-  ]
+  projects: Project[];
   userDialogRef: MatDialogRef<UserDialogComponent>;
   msgDialogRef: MatDialogRef<MessageDialogComponent>;
-
   path: string[] = ['StartDate'];
   order: number = 1; // 1 asc, -1 desc;
 
   constructor(private formBuilder: FormBuilder
-    ,private dialog: MatDialog
-    ,private utility: UtilityService
+    , private dialog: MatDialog
+    , private utility: UtilityService
+    , private projectService: ProjectService
   ) { }
 
   ngOnInit() {
+    this.initialize();
+    this.loadProjects();
+  }
+
+  initialize() {
     this.editMode = false;
     this.selectedMgrId = null;
     this.projectForm = this.formBuilder.group({
@@ -87,7 +60,9 @@ export class AddProjectComponent implements OnInit {
   get priority() { return this.projectForm.get('priority'); }
 
   openUserDialog() {
-    this.userDialogRef = this.dialog.open(UserDialogComponent);
+    this.userDialogRef = this.dialog.open(UserDialogComponent, {
+      height: '500px' 
+    });
 
     this.userDialogRef.afterClosed().subscribe((selectedUser: User) => {
       if (selectedUser) {
@@ -122,11 +97,52 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
-  addProject() {
-    if (!this.projectForm.valid) {
-      return;
-    }
+  addProject(form: NgForm) {
+    if (!this.projectForm.valid) { return; }
+    if (!this.getFormValuesAndValidate()) { return; }
 
+    this.projectService.addProject(this.project)
+      .subscribe(
+      response => {
+        alert('Project added successfully.');
+        this.loadProjects();
+        this.reset(form);
+      },
+      error => {
+        alert('An error occurred while adding the project. Please try again later.');
+      });
+  }
+
+  updateProject(form: NgForm) {
+    if (!this.projectForm.valid) { return; }
+    if (!this.getFormValuesAndValidate()) { return; }
+    this.project.ProjectId = this.selectedProjId;
+
+    this.projectService.updateProject(this.project)
+      .subscribe(
+      response => {
+        alert('Project updated successfully.');
+        this.loadProjects();
+        this.reset(form);
+      },
+      error => {
+        alert('An error occurred while updating the project. Please try again later.');
+      });
+  }
+
+  suspendProject(id: number) {
+    this.projectService.deleteProject(id)
+      .subscribe(
+      response => {
+        alert('Project suspended successfully.');
+        this.loadProjects();
+      },
+      error => {
+        alert('An error occurred while suspending the project. Please try again later.');
+      });
+  }
+
+  getFormValuesAndValidate(): boolean {
     let projectInput = this.projectForm.value;
 
     this.project = {
@@ -140,19 +156,21 @@ export class AddProjectComponent implements OnInit {
       ProjectId: 0,
       TasksCount: 0
     }
-    if (!this.validate(projectInput.startDate, projectInput.endDate)) {
+
+    if (!this.utility.validate(projectInput.startDate, projectInput.endDate)) {
       this.msgDialogRef = this.dialog.open(MessageDialogComponent, {
         data: { message: 'End date should be greater then Start date' }
       });
-      return;
+      return false;
     }
-    
+    return true;
   }
 
   editProject(project: any) {
+    this.selectedProjId = project.ProjectId;
     this.projectForm.patchValue({
       projectName: project.ProjectName,
-      projectManager: project.ProjectManagerFullName, 
+      projectManager: project.ProjectManagerFullName,
       priority: project.Priority,
     });
     // Enable the date fields if date values are present
@@ -169,22 +187,25 @@ export class AddProjectComponent implements OnInit {
     this.editMode = true;
   }
 
+  loadProjects() {
+    this.projectService.getAllProjects()
+      .subscribe(
+      project => {
+        this.projects = project;
+      },
+      error => {
+        alert('An error occurred while retrieving projects.');
+      });
+  }
+
   reset(form: NgForm): void {
     form.resetForm();
-    this.ngOnInit();
+    this.initialize();
   }
 
   sortRecords(prop: string) {
     this.path = prop.split('.')
     this.order = this.order * (-1);
     return false;
-  }
-
-  validate(strtDt: string, endDt: string): boolean {
-    if (!strtDt || !endDt) {return true;}
-    if (new Date(endDt) < new Date(strtDt)) {
-      return false;
-    }
-    return true;
   }
 }

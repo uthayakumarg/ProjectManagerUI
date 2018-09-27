@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { User } from 'src/app/Models/user';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-user-dialog',
@@ -8,40 +9,27 @@ import { User } from 'src/app/Models/user';
   styleUrls: ['./user-dialog.component.css']
 })
 export class UserDialogComponent implements OnInit {
-  users: User[] = [
-    {
-      FirstName: "Uthaya Kumar",
-      LastName: "Ganesan",
-      EmployeeId: 3049571
-    },
-    {
-      FirstName: "Anil Kumar",
-      LastName: "Gupta",
-      EmployeeId: 1234567
-    },
-    {
-      FirstName: "Rajiv Tiwary",
-      LastName: "Malhotra",
-      EmployeeId: 8475757
-    },
-    {
-      FirstName: "Sunil Sinha",
-      LastName: "Venkatesh",
-      EmployeeId: 3049571
-    },
-    {
-      FirstName: "Mani",
-      LastName: "Krishna",
-      EmployeeId: 9003483
-    }
-  ];
-  constructor(private dialogRef: MatDialogRef<UserDialogComponent>) { }
+  users: User[];
+  constructor(private dialogRef: MatDialogRef<UserDialogComponent>
+    , private userService: UserService
+  ) { }
 
   ngOnInit() {
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.userService.getAllUsers()
+      .subscribe(
+      user => {
+        this.users = user;
+      },
+      error => {
+        alert('An error occurred while retrieving users.');
+      });
   }
 
   close(user: User) {
     this.dialogRef.close(user);
   }
-
 }

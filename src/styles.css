@@ -10,6 +10,8 @@
 .width-100-percent { width: 100%; }
 .borderless td, .borderless th { border: none !important; }
 .horizontal-scroll { overflow: auto; }
+.light-blue { background-color: azure; }
+.mat-dialog-content { max-height: inherit !important; }
 
 mat-form-field { width: 100%; }
 mat-slider { width: 100%; margin-left: -8px; }

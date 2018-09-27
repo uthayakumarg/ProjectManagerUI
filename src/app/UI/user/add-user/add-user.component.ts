@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/Models/user';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UserService } from '../../../Services/user.service'
 
 @Component({
   selector: 'app-add-user',
@@ -10,43 +11,20 @@ import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angula
 export class AddUserComponent implements OnInit {
   userForm: FormGroup;
   editMode: Boolean;
-  users: User[] = [
-    {
-      FirstName: "Uthaya Kumar",
-      LastName: "Ganesan",
-      EmployeeId: 3049571
-    },
-    {
-      FirstName: "Anil Kumar",
-      LastName: "Gupta",
-      EmployeeId: 1234567
-    },
-    {
-      FirstName: "Rajiv Tiwary",
-      LastName: "Malhotra",
-      EmployeeId: 8475757
-    },
-    {
-      FirstName: "Sunil Sinha",
-      LastName: "Venkatesh",
-      EmployeeId: 3049571
-    },
-    {
-      FirstName: "Mani",
-      LastName: "Krishna",
-      EmployeeId: 9003483
-    }
-  ];
+  user: User;
+  users: User[];
 
+  // For sorting
   path: string[] = ['EmployeeId'];
   order: number = 1; // 1 asc, -1 desc;
 
-
   constructor(private formBuilder: FormBuilder
+    , private userService: UserService
   ) { }
 
   ngOnInit() {
     this.editMode = false;
+    this.loadUsers();
     this.userForm = this.formBuilder.group({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)]
@@ -58,6 +36,7 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  // Form properties
   get firstName() { return this.userForm.get('firstName'); }
   get lastName() { return this.userForm.get('lastName'); }
   get employeeId() { return this.userForm.get('employeeId'); }
@@ -68,11 +47,79 @@ export class AddUserComponent implements OnInit {
     return false;
   }
 
-  addUser() {
+  addUser(form: NgForm) {
     if (!this.userForm.valid) { return; }
-    alert('add user called');
+    this.getFormValues();
+
+    if (!this.validate(this.user.EmployeeId)) {
+      alert('The Employee id already exists.');
+      return;
+    }
+
+    this.userService.addUser(this.user)
+      .subscribe(
+      response => {
+        alert('User added successfully.');
+        this.loadUsers();
+        this.reset(form);
+      },
+      error => {
+        alert('An error occurred while adding the user. Please try again later.');
+      });
   }
 
+  updateUser(form: NgForm) {
+    if (!this.userForm.valid) { return; }
+    this.getFormValues();
+    this.userService.updateUser(this.user)
+      .subscribe(
+      response => {
+        alert('User updated successfully.');
+        this.loadUsers();
+        this.reset(form);
+      },
+      error => {
+        alert('An error occurred while updating the user. Please try again later.');
+      });
+  }
+
+  deleteUser(id: number) {
+    this.userService.deleteUser(id)
+      .subscribe(
+      response => {
+        alert('User deleted successfully.');
+        this.loadUsers();
+      },
+      error => {
+        alert('An error occurred while deleting the user. Please try again later.');
+      });
+  }
+
+  getFormValues() {
+    var userDetail = this.userForm.getRawValue();
+    this.user = {
+      EmployeeId: userDetail.employeeId,
+      FirstName: userDetail.firstName,
+      LastName: userDetail.lastName
+    }
+  }
+
+  loadUsers(): void {
+    this.userService.getAllUsers()
+      .subscribe(
+        user => {
+          this.users = user;
+        },
+        error => {
+          alert('An error occurred while retrieving users.');
+        });
+  }
+
+  validate(employeeId: number) {
+    var isIdTaken = this.users.some(function(el){ return el.EmployeeId == employeeId});
+    return !isIdTaken;
+  }
+  
   reset(form: NgForm): void {
     form.resetForm();
     this.userForm.controls['employeeId'].enable();
