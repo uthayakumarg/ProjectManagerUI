@@ -202,6 +202,12 @@ export class AddTaskComponent implements OnInit {
 
   reset(form: NgForm): void {
     form.resetForm();
+    this.taskForm.controls['projectName'].enable();
+    this.taskForm.controls['priority'].enable();
+    this.taskForm.controls['parentTaskName'].enable();
+    this.taskForm.controls['startDate'].enable();
+    this.taskForm.controls['endDate'].enable();
+    this.taskForm.controls['userName'].enable();
     this.ngOnInit();
   }
 }
