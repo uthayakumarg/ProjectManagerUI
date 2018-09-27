@@ -34,13 +34,16 @@
         </mat-error>
       </div>
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-6">
           <mat-form-field>
             <input matInput placeholder="Parent Task" formControlName="parentTaskName" readonly>
           </mat-form-field>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           <input type="button" class="btn btn-default width-100-percent" value="Search" (click)="openTaskDialog()" [disabled]="parentTask" />
+        </div>
+        <div class="col-xs-3">
+          <input type="button" class="btn btn-default width-100-percent" value="Clear" (click)="clearParentTask()" [disabled]="parentTask" />
         </div>
       </div>
       <div class="row">

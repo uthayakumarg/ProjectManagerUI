@@ -63,7 +63,7 @@ export class AddTaskComponent implements OnInit {
   get userName() { return this.taskForm.get('userName'); }
 
   openProjectDialog() {
-    this.projectDialogRef = this.dialog.open(ProjectDialogComponent,{ height: '500px'  });
+    this.projectDialogRef = this.dialog.open(ProjectDialogComponent, { height: '500px' });
 
     this.projectDialogRef.afterClosed().subscribe((selectedProj: any) => {
       if (selectedProj) {
@@ -191,6 +191,13 @@ export class AddTaskComponent implements OnInit {
           alert('An error occurred while adding the task. Please try again later.');
         });
     }
+  }
+
+  clearParentTask() {
+    this.taskForm.patchValue({
+      parentTaskName: ''
+    });
+    this.selectedTaskId = null;
   }
 
   reset(form: NgForm): void {

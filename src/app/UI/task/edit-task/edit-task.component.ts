@@ -113,7 +113,7 @@ export class EditTaskComponent implements OnInit {
       ParentName: '',
       UserId: this.oldTask.UserId,
       UserName: '',
-      TaskId: this.selectedTaskId,
+      TaskId: this.id,
       ProjectId: this.oldTask.ProjectId,
       ProjectName: '',
       TaskStatus: ''
@@ -136,6 +136,13 @@ export class EditTaskComponent implements OnInit {
         alert('An error occurred while updating the task. Please try again later.');
       });
 
+  }
+
+  clearParentTask() {
+    this.taskForm.patchValue({
+      parentTaskName: ''
+    });
+    this.selectedTaskId = null;
   }
 
   reset(): void {
