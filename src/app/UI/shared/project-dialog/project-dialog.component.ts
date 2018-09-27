@@ -11,6 +11,7 @@ import { ProjectService } from 'src/app/Services/project.service';
 export class ProjectDialogComponent implements OnInit {
 
   projects: Project[];
+  srchTerm: string = undefined;
   
   searchProps: string[] = ['ProjectName','StartDate', 'EndDate', 'Priority','ProjectManagerFullName'];
   

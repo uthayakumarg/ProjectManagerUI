@@ -22,6 +22,7 @@ export class EditTaskComponent implements OnInit {
   taskDialogRef: MatDialogRef<TaskDialogComponent>;
   msgDialogRef: MatDialogRef<MessageDialogComponent>;
   selectedTaskId: number;
+  parentTask: boolean;
   private sub: any;
   id: number;
   oldTask: Task;

@@ -10,7 +10,7 @@ import { TaskService } from 'src/app/Services/task.service';
 })
 export class TaskDialogComponent implements OnInit {
   tasks: ParentTask[];
-
+  srchTerm: string = undefined;
   constructor(private dialogRef: MatDialogRef<TaskDialogComponent>
     , private taskService: TaskService
   ) { }

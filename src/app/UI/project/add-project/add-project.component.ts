@@ -18,6 +18,7 @@ export class AddProjectComponent implements OnInit {
   editMode: Boolean;
   selectedProjId: number;
   selectedMgrId: number;
+  srchTerm: string = undefined;
   project: Project;
   searchProps: string[] = ['ProjectName', 'TasksCount', 'StartDate', 'Completed', 'EndDate', 'Priority'];
   projects: Project[];

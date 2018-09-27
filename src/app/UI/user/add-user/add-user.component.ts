@@ -13,6 +13,7 @@ export class AddUserComponent implements OnInit {
   editMode: Boolean;
   user: User;
   users: User[];
+  srchTerm: string = undefined;
 
   // For sorting
   path: string[] = ['EmployeeId'];

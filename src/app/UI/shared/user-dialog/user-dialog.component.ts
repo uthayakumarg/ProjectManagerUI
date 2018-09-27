@@ -10,6 +10,8 @@ import { UserService } from 'src/app/Services/user.service';
 })
 export class UserDialogComponent implements OnInit {
   users: User[];
+  srchTerm: string = undefined;
+  
   constructor(private dialogRef: MatDialogRef<UserDialogComponent>
     , private userService: UserService
   ) { }
