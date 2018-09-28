@@ -12,18 +12,3 @@ export class Task {
     UserName: string;
     TaskStatus: string;
 }
-
-// tasks: ParentTask[] = [
-//     {
-//       TaskId: 1,
-//       TaskName: 'Tasks Module'
-//     },
-//     {
-//       TaskId: 2,
-//       TaskName: 'Users Module'
-//     },
-//     {
-//       TaskId: 3,
-//       TaskName: 'Projects Module'
-//     }
-//   ]
